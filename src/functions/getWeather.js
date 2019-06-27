@@ -16,7 +16,7 @@ const getWeather = (latitude, longitude, callback) => {
                 callback(body.error, undefined)
             } else {
                 callback(undefined,
-                    `${body.daily.data[0].summary} Es ist momentan ${body.currently.temperature} Grad mit einer Regenwahrscheinlichkeit von ${body.currently.precipProbability}%.`
+                    `${body.daily.data[0].summary} Es ist momentan ${body.currently.temperature} Grad mit einer Regenwahrscheinlichkeit von ${body.currently.precipProbability}%. Die gefühlte Temperatur beträgt ${body.currently.apparentTemperature} Grad.`
                 )
             }
         })
