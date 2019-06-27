@@ -1,6 +1,8 @@
 const path = require("path");
 const express = require("express");
 const hbs = require("hbs");
+const getGeoCode = require("./functions/getGeoCode")
+const getWeather = require("./functions/getWeather")
 
 // Create Expressapplication
 // generated bei calling express
@@ -76,17 +78,47 @@ app.get("/about", (req, res) => {
 })
 
 app.get("/weather", (req, res) => {
-    res.send([{
-            name: "location",
-            latitude: 31,
-            longitude: 59
-        },
-        {
-            name: "weather",
-            summary: "Today it is cold.",
-            currently: "At the moment 34 degrees."
+    if (!req.query.address) {
+        return res.send([{
+            error: "Please provide an address!"
+        }])
+    }
+
+    getGeoCode(req.query.address, (error, {
+        latitude,
+        longitude,
+        placeName
+    } = {}) => {
+        if (error) {
+            return res.send({
+                error
+            })
         }
-    ])
+        getWeather(latitude, longitude, (error, weatherData) => {
+            if (error) {
+                return res.send({
+                    error
+                })
+            }
+            res.send({
+                weather: weatherData,
+                location: placeName,
+                input: req.query.address
+            })
+        })
+    })
+})
+
+app.get("/products", (req, res) => {
+    if (!req.query.search) {
+        return res.send({
+            error: "You must provide a search term"
+        })
+    }
+    console.log(req.query);
+    res.send({
+        products: []
+    })
 })
 
 app.get("/help/*", (req, res) => {
