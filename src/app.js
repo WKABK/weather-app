@@ -7,6 +7,8 @@ const getWeather = require("./functions/getWeather")
 // Create Expressapplication
 // generated bei calling express
 const app = express()
+const port = process.env.PORT || 3000
+
 // Manipulieren von Pfad mit Join
 const publicDirectoryPath = path.join(__dirname, "../public")
 const viewsPath = path.join(__dirname, "../templates/views")
@@ -140,6 +142,6 @@ app.get("*", (req, res) => {
 // Server starten
 // 1. Argument: Port
 // 2. Callbackfunction
-app.listen(3000, () => {
-    console.log("Webserver is up on port 3000.")
+app.listen(port, () => {
+    console.log(`Webserver is up on port ${port}.`)
 })
